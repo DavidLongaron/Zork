@@ -1,8 +1,8 @@
 #include "Entity.h"
 #include <iostream>
 
-Entity::Entity(const std::string &name, const std::string &description, Entity* parent = NULL, std::vector<Item*> items) :
-	name{ name }, description{ description }, parent{ parent }, itemList{items}
+Entity::Entity(const std::string &name, std::vector<Item*> items) :
+	name{ name }, itemList{items}
 {
 	type = ENTITY;
 }

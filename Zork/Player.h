@@ -3,14 +3,14 @@
 class Player :public Entity
 {
 public:
-	Player(const std::string& name, const std::string& description);
+	Player();
 	virtual ~Player();
 
 	
 	void PickItem(Item*);
 
-	void DropItem(Item*);
+	void DropItem(const Item*);
 
-
+	bool HaveItem(const Item*);
 };
 

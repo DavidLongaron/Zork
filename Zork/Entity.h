@@ -15,14 +15,12 @@ class Entity
 {
 public:
 
-	Entity(const std::string &name, const std::string &description, Entity* parent, std::vector<Item*> items);
+	Entity(const std::string &name,  std::vector<Item*> items);
 	virtual ~Entity();
 
 	EntityType type;
 	std::string name;
-	std::string description;
 
-	Entity* parent;
 	std::vector<Item*> itemList;
 };
 
