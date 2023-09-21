@@ -10,21 +10,20 @@ Player::~Player()
 }
 
 void Player::PickItem( Item* item){
-	Entity::itemList.push_back(item);	
+	itemList.push_back(item);	
 }
 
 void Player::DropItem(const Item* item){
-	auto itemIndex = find(Entity::itemList.begin(), Entity::itemList.end(), item);
-		if(itemIndex != Entity::itemList.end()) {
-			__int64 index = itemIndex - Entity::itemList.begin();
-			Entity::itemList.erase(Entity::itemList.begin() + index);
+	auto itemIndex = find(itemList.begin(), itemList.end(), item);
+		if(itemIndex != itemList.end()) {
+			__int64 index = itemIndex - itemList.begin();
+			itemList.erase(itemList.begin() + index);
 		}
 	}
 
 bool Player::HaveItem(const Item* item) {
 
-	auto test=std::find(Entity::itemList.begin(), Entity::itemList.end(), item) != Entity::itemList.end();
-	std::cout << test;
-	return true;
+	auto test=std::find(itemList.begin(),itemList.end(), item) != itemList.end();
+	return test;
 }
 

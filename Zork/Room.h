@@ -1,17 +1,16 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "Entity.h"
 
-class Item;
-class Room : virtual public Entity
-{
+class RoomArea;
+class Room {
 public:
 
-	Room(const std::string &name, const std::string &description, std::vector<Item*> items );
+	Room(std::vector<RoomArea>);
 	virtual ~Room();
 
 	bool hasPlayer;
+	std::vector<RoomArea> roomAreas;
 
 
 };

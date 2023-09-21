@@ -1,8 +1,11 @@
 #pragma once
-#include "Entity.h"
-class Player :public Entity
+#include <utility> 
+#include <vector>
+class Item;
+class Player 
 {
 public:
+
 	Player();
 	virtual ~Player();
 
@@ -12,5 +15,9 @@ public:
 	void DropItem(const Item*);
 
 	bool HaveItem(const Item*);
+
+	std::pair<int, int> roomPosition;
+	std::vector<Item*> itemList{};
+
 };
 

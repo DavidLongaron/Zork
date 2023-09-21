@@ -1,15 +1,14 @@
 #pragma once
-#include "Entity.h"
-class Item : public Entity
+#include <string>
+
+class Item 
 {
 	public:
 
-		//Item(const std::string& name, const std::string& description);
+	Item(const std::string itemName);
+	virtual ~Item();
 
-		//virtual ~Item();
-		//
-		//bool isInteractuable;
-		//bool isPickeable;
-		//bool isDropable;
+	std::string name;
+
 };
 
