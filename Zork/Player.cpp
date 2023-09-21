@@ -27,3 +27,9 @@ bool Player::HaveItem(const Item* item) {
 	return test;
 }
 
+void Player::Move(std::pair<int, int>newRoomPosition) {
+	this->roomPosition.first = newRoomPosition.first;
+	this->roomPosition.second = newRoomPosition.second;
+
+}
+

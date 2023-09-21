@@ -1,9 +1,10 @@
 #include "Room.h"
 #include <iostream>
 
-Room::Room(std::vector<RoomArea> roomAreas) 
+Room::Room(std::vector<std::vector<RoomArea*>> roomAreas):
+	roomAreas{ roomAreas}
 {
-	this->roomAreas = roomAreas;
+
 
 }
 

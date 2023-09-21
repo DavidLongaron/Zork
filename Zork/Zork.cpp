@@ -6,12 +6,38 @@
 #include <vector>
 #include "Room.h"
 #include "Player.h"
+#include "Item.h"
+#include "RoomArea.h"
 int heroNumber = 83;
 
+RoomArea generateEmptyRoomArea() {
+	std::string description = "There is nothing here";
+	return RoomArea(false, false, description);
+}
 
 void startAdventure() {
 
+	std::vector<std::vector<RoomArea*>> room1{ };
+
+	for (int i{ 0 }; i <= 2; ++i) {
+		room1.push_back({});
+		for (int z{ 0 }; z <= 2; ++z) {
+			RoomArea newRoomArea = generateEmptyRoomArea();
+			RoomArea *ptrArea = &newRoomArea;
+			room1[i].push_back(ptrArea);
+			std::cout << room1[i][z]->description << "\n";
+			std::cout << i << "\n";
+			std::cout << z << "\n";
+		}
+	}
+	room1[1][1]->description = "There is a key in the floor";
+	room1[1][1]->hasItem = true;
+	room1[1][1]->hasEvent = true;
 }
+
+
+
+
 
 void room1Interactions() {
 
@@ -60,9 +86,16 @@ void room1VaseInteractions() {
 	}
 }
 
+
+
+
 int main()
 {
-	room1Interactions();
+	startAdventure();
+	//std::vector<RoomArea>
+	//Room Room1{}
+
+	//room1Interactions();
 
 	//std::cout << "You are the" << heroNumber << " hero to finally arrive to the tower where someone is being held captured, you enter the first room \n";
 	//std::cout << " Now what do you want to do?";

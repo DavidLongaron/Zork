@@ -9,7 +9,7 @@ public:
 	Player();
 	virtual ~Player();
 
-	
+	void Move(std::pair<int,int>);
 	void PickItem(Item*);
 
 	void DropItem(const Item*);

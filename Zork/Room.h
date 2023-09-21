@@ -6,11 +6,11 @@ class RoomArea;
 class Room {
 public:
 
-	Room(std::vector<RoomArea>);
+	Room(std::vector<std::vector<RoomArea*>>);
 	virtual ~Room();
 
-	bool hasPlayer;
-	std::vector<RoomArea> roomAreas;
+	bool hasPlayer{ false};
+	std::vector<std::vector<RoomArea*>> roomAreas{ };
 
 
 };
