@@ -1,7 +1,10 @@
 #include "RoomArea.h"
 
 
-RoomArea::RoomArea(bool hasEvent, bool hasItem, std::string description, std::function<void(Player*)> eventFunction) :
+
+
+
+RoomArea::RoomArea(bool hasEvent, bool hasItem, std::string description, std::function<void(Player*)> eventFunction=NULL) :
 	roomEvent(eventFunction)
 {
 	this->hasEvent = hasEvent;
@@ -13,4 +16,9 @@ RoomArea::RoomArea(bool hasEvent, bool hasItem, std::string description, std::fu
 
 RoomArea::~RoomArea()
 {
+}
+
+void RoomArea::defaultEvent(Player* player) {
+	std::string description = this->description;
+	std::cout << description << "\n";
 }

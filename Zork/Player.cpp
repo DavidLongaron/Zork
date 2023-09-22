@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <iostream>
 #include <string>
+
  Player::Player(Room* room):
 	 currentRoom{room}
 {
@@ -32,9 +33,11 @@ bool Player::HaveItem(const Item* item) {
 void Player::Move(std::pair<int, int>newRoomPosition) {
 	this->roomPosition.first = newRoomPosition.first;
 	this->roomPosition.second = newRoomPosition.second;
-	if (this->currentRoom->roomAreas[this->roomPosition.first][this->roomPosition.second]->hasEvent) {
-
-
+	if (!this->currentRoom->roomAreas[this->roomPosition.first][this->roomPosition.second]->hasEvent) {
+		this->currentRoom->roomAreas[this->roomPosition.first][this->roomPosition.second]->defaultEvent(this);
+	}
+	else {
+		this->currentRoom->roomAreas[this->roomPosition.first][this->roomPosition.second]->roomEvent(this);
 	}
 
 
@@ -44,8 +47,10 @@ void Player::PlayerInteractions() {
 	std::string playerInput = "";
 
 	while (playerInput != "up" && playerInput != "down" && playerInput != "right" && playerInput != "left" && playerInput != "pick" && playerInput != "drop") {
-
+		std::cout << "Llegas bien?";
+		
 		//Could use a switch but I feel more comfortable with if chains, and for this type of asignment I prefer what I know best
+		
 		if (this->roomPosition.first > 0) {
 			std::cout << " Input up: Go up \n";
 		}
@@ -75,11 +80,11 @@ void Player::PlayerInteractions() {
 			std::cout << "Wrong Input \n";
 			playerInput = "";
 		}
-		if (playerInput == "pick" && !this->roomArea->hasItem) {
+		if (playerInput == "pick" && !this->currentRoom->roomAreas[this->roomPosition.first][this->roomPosition.second]->hasItem) {
 			std::cout << "There is no item here \n";
 			playerInput = "";
 		}
-		if (playerInput == "drop" && this->roomArea->hasItem) {
+		if (playerInput == "drop" && this->currentRoom->roomAreas[this->roomPosition.first][this->roomPosition.second]->hasItem) {
 			std::cout << "There is already an item here \n";
 			playerInput = "";
 		}
@@ -89,7 +94,20 @@ void Player::PlayerInteractions() {
 
 	if (playerInput == "up") {
 		std::pair<int, int> newPosition{ this->roomPosition.first+1,this->roomPosition.second };
-		this->Move( newPosition)
+		this->Move(newPosition);
+	}
+	if (playerInput == "down") {
+		std::cout << "Por aqui pasas? down  \n";
+		std::pair<int, int> newPosition{ this->roomPosition.first-1,this->roomPosition.second };
+		this->Move(newPosition);
+	}
+	if (playerInput == "right") {
+		std::pair<int, int> newPosition{ this->roomPosition.first,this->roomPosition.second+1 };
+		this->Move(newPosition);
+	}
+	if (playerInput == "up") {
+		std::pair<int, int> newPosition{ this->roomPosition.first ,this->roomPosition.second-1 };
+		this->Move(newPosition);
 	}
 }
 

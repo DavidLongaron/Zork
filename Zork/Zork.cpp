@@ -10,9 +10,10 @@
 #include "RoomArea.h"
 int heroNumber = 83;
 
+void emptyFunction(Player* player) {};
 RoomArea generateEmptyRoomArea() {
 	std::string description = "There is nothing here";
-	return RoomArea(false, false, description);
+	return RoomArea(false, false, description,emptyFunction);
 }
 
 void room1DoorEvent(Player* player) {
@@ -28,9 +29,6 @@ Room createRoom1(){
 			RoomArea newRoomArea = generateEmptyRoomArea();
 			RoomArea* ptrArea = &newRoomArea;
 			room1[i].push_back(ptrArea);
-			std::cout << room1[i][z]->description << "\n";
-			std::cout << i << "\n";
-			std::cout << z << "\n";
 		}
 	}
 
@@ -48,9 +46,11 @@ Room createRoom1(){
 
 void startAdventure() {
 	Room room1 = createRoom1();
-	Player player{room1.roomAreas[2][0]};
+	Player player{&room1};
+	player.roomPosition.first = 2;
+	player.roomPosition.second = 1;
 	while (true) {
-		player.Move();
+		player.PlayerInteractions();
 	}
 
 
