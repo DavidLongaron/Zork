@@ -9,10 +9,10 @@ class Item;
 class RoomArea
 {
  public:
-	 std::function<void(Player*)> roomEvent;
+
 	RoomArea(bool hasEvent,bool hasItem, std::string description, std::function<void(Player*)> eventFunction=NULL);
 
-
+	std::function<void(Player*)> roomEvent;
 	virtual ~RoomArea();
 	bool hasEvent;
 	bool hasItem;
