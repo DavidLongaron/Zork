@@ -5,15 +5,15 @@
 #include <string>
 #include <vector>
 #include "Room.h"
-#include "Player.h"
 #include "Item.h"
 #include "RoomArea.h"
-int heroNumber = 83;
+#include "Player.h"
+
 
 void emptyFunction(Player* player) {};
 RoomArea generateEmptyRoomArea() {
 	std::string description = "There is nothing here";
-	return RoomArea(false, false, description,emptyFunction);
+	return RoomArea(description,emptyFunction);
 }
 
 void room1DoorEvent(Player* player) {
@@ -21,37 +21,35 @@ void room1DoorEvent(Player* player) {
 }
 
 Room createRoom1(){
-	std::vector<std::vector<RoomArea*>> room1{ };
-
+	std::vector<std::vector<RoomArea>> room1{};
+	
 	for (int i{ 0 }; i <= 2; ++i) {
 		room1.push_back({});
 		for (int z{ 0 }; z <= 2; ++z) {
 			RoomArea newRoomArea = generateEmptyRoomArea();
-			RoomArea* ptrArea = &newRoomArea;
-			room1[i].push_back(ptrArea);
+			room1[i].push_back( newRoomArea);
 		}
 	}
 
 	Item key = { std::string("Key 1 Room") };
-	room1[1][1]->description = "There is a key in the floor";
-	room1[1][1]->hasItem = true;
-	room1[1][1]->item = &key;
-	room1[0][1]->description = "There is a door in front of you";
-	room1[0][1]->hasEvent = true;
-	room1[0][1]->roomEvent = &room1DoorEvent;
+	room1[1][1].description = "There is a key in the floor";
+	room1[1][1].hasItem = true;
+	room1[1][1].item = &key;
+	room1[0][1].description = "There is a door in front of you";
+	room1[0][1].hasEvent = true;
+	room1[0][1].roomEvent = &room1DoorEvent;
+	std::cout << "Has event-1:" << room1[0][1].description << "\n";
 	return room1;
 }
 
 
 
-void startAdventure() {
-	Room room1 = createRoom1();
-	Player player{&room1};
-	player.roomPosition.first = 2;
-	player.roomPosition.second = 1;
-	while (true) {
+void startAdventure(Player& player) {
+
+	std::cout << "Has event2" << player.currentRoom.roomAreas[player.roomPosition.first][player.roomPosition.second].description << "\n";
+
 		player.PlayerInteractions();
-	}
+	
 
 
 }
@@ -59,8 +57,17 @@ void startAdventure() {
 
 int main()
 {
-	startAdventure();
+	Room room1 = createRoom1();
+	std::cout << "Has event0:" << room1.roomAreas[0][0].description << "\n";
+	 Player  player{ room1 };
+	player.roomPosition.first = 2;
+	player.roomPosition.second = 1;
 
+	std::cout<< "Has event1:" << player.currentRoom.roomAreas[player.roomPosition.first][player.roomPosition.second].description << "\n";
+	while (true) {
+		startAdventure(player);
+
+	}
 
 }
 
