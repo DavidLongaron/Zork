@@ -1,19 +1,15 @@
-// Zork.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
-//
-#include <iostream>
-#include <string>
-#include <vector>
+
 #include "Room.h"
 #include "Item.h"
 #include "RoomArea.h"
 #include "Player.h"
-#include <algorithm>
+#include<windows.h>           
 
 const Item keyDoor1 = { std::string("Key") };
 const Item yellowKeyDoor2 = { std::string("Yellow Key") };
 const Item purpleKeyDoor2 = { std::string("Purple Key") };
+bool gameLoopCondition = true;
 
-void emptyFunction(Player* player) {};
 
 Room generateEmptyRoom() {
 	std::string description = "There is nothing here";
@@ -22,7 +18,7 @@ Room generateEmptyRoom() {
 		room.push_back({});
 
 		for (int z{ 0 }; z <= 2; ++z) {
-			RoomArea newRoomArea = RoomArea(description, emptyFunction);
+			RoomArea newRoomArea = RoomArea(description);
 
 			room[i].push_back(newRoomArea);
 		}
@@ -31,19 +27,6 @@ Room generateEmptyRoom() {
 
 	return room;
 }
-
-//Room createSecondRoom() {
-//	Room room2 = generateEmptyRoom();
-//
-//	room2.roomAreas[1][1].itemDescription = std::string("There is a ") + keyDoor1.name + std::string(" in the floor\n");
-//	std::cout << room2.roomAreas[1][1].itemDescription;
-//	room2.roomAreas[1][1].hasItem = true;
-//	room2.roomAreas[1][1].item = &keyDoor1;
-//	room2.roomAreas[0][1].description = "There is a door in front of you";
-//	room2.roomAreas[0][1].hasEvent = true;
-//	room2.roomAreas[0][1].roomEvent = &room1DoorEvent;
-//	return room2;
-//}
 
 
 
@@ -66,6 +49,34 @@ void room2PurpleEvent(Player* player)
 		std::cout << "There is a purple hole in the floor you could drop an item there\n";
 	}
 }
+void room3Event(Player* player) {
+	std::cout << "You find a man, he starts talking to you. \n";
+	Sleep(2000);
+	std::cout << "Hello, I'm David, the programmer of this test, thank you for playing!\n";
+	std::cout << "I hope that even if this was very simple you still find it a bit interesting.\n";
+	Sleep(2000);
+	std::cout << "And that the code looks good enough!\n";
+	Sleep(2000);
+	std::cout << "At first I wanted to make a more story focus game, with secret lore.\n";
+	std::cout << "But due to the time limit and well being a bit busy in general I had to settle with something simpler\n";
+	Sleep(2000);
+	std::cout << "I hope that if I get accepted in the master I can make more interesting games!\n";
+	std::cout << "Hope to see you soon! \n";
+	Sleep(2000);
+	std::cout << "\nCongratulations, you finished the game!\n";
+	gameLoopCondition = false;
+}
+
+
+
+Room createThirdRoom() {
+	Room room3 = generateEmptyRoom();
+
+	room3.roomAreas[1][1].hasEvent = true;
+	room3.roomAreas[1][1].roomEvent = &room3Event;
+
+	return room3;
+}
 
 void room2DoorEvent(Player* player) {
 
@@ -74,13 +85,17 @@ void room2DoorEvent(Player* player) {
 		player->currentRoom.roomAreas[0][2].hasItem && player->currentRoom.roomAreas[0][2].item == &purpleKeyDoor2) {
 		std::cout << "The door is already open!\n";
 		std::cout << "You move to the next room \n";
-
+		Room room3 = createThirdRoom();
+		player->currentRoom = room3;
+		player->roomPosition.first = 2;
+		player->roomPosition.second = 1;
 	}
 	else {
 		std::cout << "There is a door in front of you, however you don't see any keyhole or similar\n";
 	}
 
 }
+
 
 Room createSecondRoom() {
 	Room room2 = generateEmptyRoom();
@@ -133,32 +148,6 @@ Room createFirstRoom(){
 	return room1;
 }
 
-//Room createRoom2() {
-//
-//	std::vector<std::vector<RoomArea>> room2{};
-//
-//	for (int i{ 0 }; i <= 2; ++i) {
-//		room2.push_back({});
-//
-//		for (int z{ 0 }; z <= 2; ++z) {
-//			RoomArea newRoomArea = generateEmptyRoomArea();
-//
-//			room2[i].push_back(newRoomArea);
-//		}
-//	}
-//
-//
-//
-//	room2[1][1].itemDescription = std::string("There is a ") + keyDoor1.name + std::string(" in the floor\n");
-//	std::cout << room1[1][1].itemDescription;
-//	room1[1][1].hasItem = true;
-//	room1[1][1].item = &keyDoor1;
-//	room1[0][1].description = "There is a door in front of you";
-//	room1[0][1].hasEvent = true;
-//	room1[0][1].roomEvent = &room1DoorEvent;
-//	return room1;
-//}
-
 
 
 void startAdventure(Player& player) {
@@ -173,69 +162,9 @@ int main()
 	Player  player{ room1 };
 	player.roomPosition.first = 2;
 	player.roomPosition.second = 1;
-	while (true) {
+	while (gameLoopCondition) {
 
 		startAdventure(player);
 	}
 
 }
-
-// Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
-// Depurar programa: F5 o menú Depurar > Iniciar depuración
-
-// Sugerencias para primeros pasos: 1. Use la ventana del Explorador de soluciones para agregar y administrar archivos
-//   2. Use la ventana de Team Explorer para conectar con el control de código fuente
-//   3. Use la ventana de salida para ver la salida de compilación y otros mensajes
-//   4. Use la ventana Lista de errores para ver los errores
-//   5. Vaya a Proyecto > Agregar nuevo elemento para crear nuevos archivos de código, o a Proyecto > Agregar elemento existente para agregar archivos de código existentes al proyecto
-//   6. En el futuro, para volver a abrir este proyecto, vaya a Archivo > Abrir > Proyecto y seleccione el archivo .sln
-
-
-
-// 
-//void room1Interactions() {
-//
-//	std::string playerInput ="";
-//
-//
-//	while (playerInput != "Door" && playerInput != "Vases" && playerInput != "Floor") {
-//		std::cout << "You see a door at the other side room, a vase in one corner of the room, and in another corner a strange floor tile, what do you want to inspect? \n";
-//		std::cout << " Input Door: Check the Door \n";
-//		std::cout << " Input Vase: Check the vase \n";
-//		std::cout << " Input Floor: Check the  strange floor tile\n";
-//		std::getline(std::cin >> std::ws, playerInput);
-//
-//		if (playerInput != "Door" && playerInput != "Vase" &&  playerInput != "Floor") {
-//			std::cout << "Wrong Input \n";
-//		}
-//	}
-//	std::cout << "Good job \n";
-//
-//
-//}
-//void room1VaseInteractions() {
-//	std::string playerInput = "";
-//
-//	while (playerInput != "Shake" && playerInput != "Break" && playerInput != "Pick") {
-//		std::cout << "You get closer to the vase, what do you want to do? \n";
-//		std::cout << " Input Shake: Try to shake the vase \n";
-//		std::cout << " Input Break: Try to break the vase \n";
-//		std::cout << " Input Pick: Try to take it with you \n";
-//		std::getline(std::cin >> std::ws, playerInput);
-//		if (playerInput != "Shake" && playerInput != "Break" && playerInput != "Pick") {
-//			std::cout << "Wrong Input \n";
-//		}
-//		else if (playerInput == "Shake") {
-//			std::cout << " You shake the vase, you can heard  a metalic sound inside";
-//			playerInput = "";
-//
-//		}
-//		else if (playerInput == "Break") {
-//			std::cout << "Is a litle bit heavy but you manage to crash the vase against the flood,\n";
-//			std::cout << "Between the fragmes you find a key, it seem important so you take it with you \n";
-//			playerInput = "";
-//			std::cout << "You go back to the start of the room \n";
-//
-//		}
-//	}
-//}

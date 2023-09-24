@@ -12,7 +12,6 @@ Player::~Player()
 void Player::PickItem( const Item* item){
 	itemList.push_back(item);
 	std::cout << "You picked a " << item->name << "\n";
-	std::cout << this->roomPosition.first << "---------" << this->roomPosition.second;
 	CURRENT_ROOM_AREA.hasItem = false;
 	CURRENT_ROOM_AREA.item = nullptr;
 }
@@ -154,14 +153,4 @@ void Player::PlayerInteractions() {
 	}
 	playerInput = "";
 }
-
-//Room Player:: getCurrentRoom() {
-//	return this->currentRoom;
-//}
-//
-//
-//void Player::setCurrentRoom(Room& room) {
-//	this->currentRoom = room;
-//}
-
 

@@ -4,8 +4,12 @@
 
 
 
-RoomArea::RoomArea( std::string description, std::function<void(Player*)> eventFunction=NULL) :
+RoomArea::RoomArea( std::string description, std::function<void(Player*)> eventFunction) :
 	roomEvent(eventFunction),description(description)
+{
+}
+RoomArea::RoomArea(std::string description) :
+	 description(description)
 {
 }
 

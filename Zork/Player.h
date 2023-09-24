@@ -29,8 +29,5 @@ public:
 	bool HaveItem(const Item*);
 	void PlayerInteractions();
 
-	//Room getCurrentRoom();
-
-	//void setCurrentRoom(Room&);
 };
 
