@@ -17,11 +17,11 @@ public:
 	virtual ~Player();
 	void Move(std::pair<int,int>);
 	std::pair<int, int> roomPosition;
-	std::vector<const Item*> itemList{};
+	std::vector< Item*> itemList{};
 	Room currentRoom;
-	void PickItem(const Item*);
+	void PickItem( Item*);
 	void DropItem();
-	bool HaveItem(const Item*);
+	void PutItem();
 	void PlayerInteractions();
 
 };

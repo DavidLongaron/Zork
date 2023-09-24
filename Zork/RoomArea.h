@@ -21,7 +21,7 @@ class RoomArea
 	virtual ~RoomArea();
 	bool hasEvent{false};
 	bool hasItem{false};
-	const Item* item=nullptr;
+	Item* item=nullptr;
 	std::string description;
 	std::string itemDescription{ "" };
 

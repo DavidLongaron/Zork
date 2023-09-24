@@ -5,9 +5,10 @@
 #include "Player.h"
 #include<windows.h>           
 
-const Item keyDoor1 = { std::string("Key") };
-const Item yellowKeyDoor2 = { std::string("Yellow Key") };
-const Item purpleKeyDoor2 = { std::string("Purple Key") };
+ Item keyDoor1 = { std::string("Key") };
+ Item yellowKeyDoor2 = { std::string("Yellow Key") };
+ Item purpleKeyDoor2 = { std::string("Purple Key") };
+ Item purpleLockDoor2 = { std::string("Purple  Stone"),true, nullptr};
 bool gameLoopCondition = true;
 
 
@@ -42,15 +43,15 @@ void room2YellowEvent(Player* player)
 	}
 }
 
-void room2PurpleEvent(Player* player)
-{
-	if (player->currentRoom.roomAreas[0][2].hasItem && player->currentRoom.roomAreas[0][2].item == &purpleKeyDoor2) {
-		std::cout << "The purple key fits perfectly in the hole\n";
-	}
-	else {
-		std::cout << "There is a purple hole in the floor you could drop an item there\n";
-	}
-}
+//void room2PurpleEvent(Player* player)
+//{
+//	if (player->currentRoom.roomAreas[0][2].hasItem && player->currentRoom.roomAreas[0][2].item == &purpleKeyDoor2) {
+//		std::cout << "The purple key fits perfectly in the hole\n";
+//	}
+//	else {
+//		std::cout << "There is a purple hole in the floor you could drop an item there\n";
+//	}
+//}
 void room3Event(Player* player) {
 	std::cout << "You find a man, he starts talking to you. \n";
 	Sleep(2000);
@@ -76,7 +77,7 @@ void room2DoorEvent(Player* player) {
 
 	if ((player->currentRoom.roomAreas[0][0].hasItem && player->currentRoom.roomAreas[0][0].item == &yellowKeyDoor2)
 		&& 
-		player->currentRoom.roomAreas[0][2].hasItem && player->currentRoom.roomAreas[0][2].item == &purpleKeyDoor2) {
+		purpleLockDoor2.itemHolded==&purpleKeyDoor2) {
 		std::cout << "The door is already open!\n";
 		std::cout << "You move to the next room \n";
 		Room room3 = createThirdRoom();
@@ -134,8 +135,11 @@ Room createSecondRoom() {
 	room2.roomAreas[0][0].hasEvent = true;
 	room2.roomAreas[0][0].roomEvent = &room2YellowEvent;
 
-	room2.roomAreas[0][2].hasEvent = true;
-	room2.roomAreas[0][2].roomEvent = &room2PurpleEvent;
+	//room2.roomAreas[0][2].hasEvent = true;
+	//room2.roomAreas[0][2].roomEvent = &room2PurpleEvent;
+	room2.roomAreas[0][2].itemDescription = std::string("There is a ") + purpleLockDoor2.name + std::string(" in the floor, it has hole with the shape of a key\n");
+	room2.roomAreas[0][2].hasItem = true;
+	room2.roomAreas[0][2].item = &purpleLockDoor2;
 
 
 	room2.roomAreas[1][2].hasEvent = true;

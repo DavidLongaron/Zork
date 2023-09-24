@@ -5,11 +5,14 @@ class Item
 {
 	public:
 
-	Item(const std::string itemName);
+	Item(const std::string);
 	Item();
+	Item(const std::string,bool,  Item*);
 	virtual ~Item();
-
+	void setItemHolded( Item*);
 	std::string name;
+	bool canHoldItem{false};
+	Item* itemHolded{ nullptr };
 
 };
 

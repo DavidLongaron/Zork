@@ -1,6 +1,6 @@
 #include "Player.h"
 #define CURRENT_ROOM_AREA this->currentRoom.roomAreas[this->roomPosition.first][this->roomPosition.second]
-#define NOT_VALID_INPUTS playerInput != "up" && playerInput != "down" && playerInput != "right" && playerInput != "left" && playerInput != "pick" && playerInput != "drop"
+#define NOT_VALID_INPUTS playerInput != "up" && playerInput != "down" && playerInput != "right" && playerInput != "left" && playerInput != "pick" && playerInput != "drop"&& playerInput != "put"
  Player::Player(Room room):
 	 currentRoom{room}
 {
@@ -10,7 +10,7 @@ Player::~Player()
 {
 }
 
-void Player::PickItem( const Item* item){
+void Player::PickItem(Item* item){
 	itemList.push_back(item);
 	std::cout << "You picked a " << item->name << "\n";
 	CURRENT_ROOM_AREA.hasItem = false;
@@ -39,11 +39,56 @@ void Player::DropItem() {
 	CURRENT_ROOM_AREA.itemDescription = std::string("There is a ") + CURRENT_ROOM_AREA.item->name + std::string(" in the floor\n");
 	itemList.erase(itemList.begin() + playerInput);	
 }
-bool Player::HaveItem(const Item* item) {
 
-	auto test=std::find(itemList.begin(),itemList.end(), item);
-	return true;
+void Player::PutItem() {
+
+	std::size_t length{ this->itemList.size() };
+	int playerInputItem1 = -1;
+	int playerInputItem2 = -1;
+	bool conditionItem1 = true;
+	bool conditionItem2 = true;
+	while (conditionItem1) {
+		std::cout << "Pick an item to be the holder: \n";
+		for (std::size_t index{ 0 }; index < length; ++index) {
+				std::cout << "Input " << index << " to choose:" << this->itemList[index]->name << "\n";
+		}
+		std::cin >> playerInputItem1;
+		if (!this->itemList[playerInputItem1]->canHoldItem) {
+			std::cout << "This item cannot hold others \n";
+			return;
+		}
+		if (this->itemList[playerInputItem1]->itemHolded != nullptr) {
+			std::cout << "There is already an item inside, you take it away \n";
+			this->itemList.push_back(this->itemList[playerInputItem1]->itemHolded);
+			this->itemList[playerInputItem1]->itemHolded = nullptr;
+		}
+		if (playerInputItem1 > -1 && playerInputItem1 < length) {
+			conditionItem1 = false;
+		}
+		
+	}
+	while (conditionItem2) {
+		std::cout << "Now pick an item to put inside: \n";
+		for (std::size_t index{ 0 }; index < length; ++index) {
+			if (this->itemList[index]->itemHolded==nullptr) {
+				if (index !=playerInputItem1 ) {
+					std::cout << "Input " << index << " to choose:" << this->itemList[index]->name << "\n";
+				}
+			}
+		}
+		std::cin >> playerInputItem2;
+		if (playerInputItem2 > -1 && playerInputItem2 < length) {
+			conditionItem2 = false;
+		}
+	}
+	std::cout << "You put: " << this->itemList[playerInputItem2]->name << " inside "<< this->itemList[playerInputItem1]->name<<"\n";
+	 Item* newItem = this->itemList[playerInputItem2];
+	this->itemList[playerInputItem1]->setItemHolded(newItem);
+	
+	this->itemList.erase(itemList.begin() + playerInputItem2);
 }
+
+
 
 void Player::Move(std::pair<int, int>newRoomPosition) {
 	this->roomPosition.first = newRoomPosition.first;
@@ -88,7 +133,10 @@ void Player::PlayerInteractions() {
 			std::cout << " Input pick: Pick Item \n";
 		if (this->itemList.size() > 0) {
 			std::cout << " Input drop: Drop Item \n";
-		}	
+		}
+		if (this->itemList.size() > 1) {
+			std::cout << " Input put: Put an Item into another \n";
+		}
 		std::cout << "-----------\n";
 		std::getline(std::cin >> std::ws, playerInput);
 		if (NOT_VALID_INPUTS) {
@@ -155,6 +203,15 @@ void Player::PlayerInteractions() {
 			std::cout << "There is already an item here \n";
 		}
 
+	}
+	if (playerInput == "put") {
+		if (this->itemList.size() > 1) {
+			this->PutItem();
+		}
+		else {
+			std::cout << "You dont have enough items\n";
+		}
+		
 	}
 	playerInput = "";
 }
