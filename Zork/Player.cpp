@@ -9,34 +9,35 @@ Player::~Player()
 {
 }
 
-void Player::PickItem( Item* item){
+void Player::PickItem( const Item* item){
 	itemList.push_back(item);
 	std::cout << "You picked a " << item->name << "\n";
+	std::cout << this->roomPosition.first << "---------" << this->roomPosition.second;
 	CURRENT_ROOM_AREA.hasItem = false;
-	CURRENT_ROOM_AREA.description = "There is nothing here";
+	CURRENT_ROOM_AREA.item = nullptr;
 }
 
 void Player::DropItem() {
 
 	std::size_t length{ this->itemList.size() };
 	int playerInput = - 1;
-
-	while (playerInput<0 || playerInput>length ) {
+	bool condition = true;
+	while (condition) {
 		std::cout << "Which item do you want to drop?: \n";
 		for (std::size_t index{ 0 }; index < length; ++index) {
 			std::cout << "Input " << index << " to drop:" << this->itemList[index]->name << "\n";
 		}
 
 		std::cin >> playerInput;
-
-
+		if (playerInput>-1 && playerInput<length) {
+			condition = false;
+		}
 	}
 	std::cout << "You dropped: " << itemList[playerInput]->name<< "\n";
 	CURRENT_ROOM_AREA.hasItem = true;
 	CURRENT_ROOM_AREA.item = itemList[playerInput];
-	itemList.erase(itemList.begin() + playerInput);
-	
-	
+	CURRENT_ROOM_AREA.itemDescription = std::string("There is a ") + CURRENT_ROOM_AREA.item->name + std::string(" in the floor\n");
+	itemList.erase(itemList.begin() + playerInput);	
 }
 bool Player::HaveItem(const Item* item) {
 
@@ -47,12 +48,20 @@ bool Player::HaveItem(const Item* item) {
 void Player::Move(std::pair<int, int>newRoomPosition) {
 	this->roomPosition.first = newRoomPosition.first;
 	this->roomPosition.second = newRoomPosition.second;
-	std::cout << this->roomPosition.first << "--aaaa--" << this->roomPosition.second << "\n";
-	if (!this->currentRoom.roomAreas[this->roomPosition.first][this->roomPosition.second].hasEvent) {
-		this->currentRoom.roomAreas[this->roomPosition.first][this->roomPosition.second].defaultEvent();
+
+	if (!CURRENT_ROOM_AREA.hasEvent) {
+		CURRENT_ROOM_AREA.defaultEvent();
+
+		if (CURRENT_ROOM_AREA.hasItem) {
+			std::cout<<CURRENT_ROOM_AREA.itemDescription;
+		}
 	}
 	else {
-		this->currentRoom.roomAreas[this->roomPosition.first][this->roomPosition.second].roomEvent(this);
+		CURRENT_ROOM_AREA.roomEvent(this);
+
+		if (CURRENT_ROOM_AREA.hasItem) {
+			std::cout << CURRENT_ROOM_AREA.itemDescription;
+		}
 	}
 
 
@@ -60,9 +69,8 @@ void Player::Move(std::pair<int, int>newRoomPosition) {
 
 void Player::PlayerInteractions() {
 	std::string playerInput = "";
-
+	
 	while (playerInput != "up" && playerInput != "down" && playerInput != "right" && playerInput != "left" && playerInput != "pick" && playerInput != "drop") {
-		
 		//Could use a switch but I feel more comfortable with if chains, and for this type of asignment I prefer what I know best
 		std::cout << "\n----------- \n";
 		if (this->roomPosition.first > 0) {
@@ -146,5 +154,14 @@ void Player::PlayerInteractions() {
 	}
 	playerInput = "";
 }
+
+//Room Player:: getCurrentRoom() {
+//	return this->currentRoom;
+//}
+//
+//
+//void Player::setCurrentRoom(Room& room) {
+//	this->currentRoom = room;
+//}
 
 

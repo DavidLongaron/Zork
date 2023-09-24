@@ -13,6 +13,5 @@ public:
 	bool hasPlayer{ false};
 	std::vector<std::vector<RoomArea>> roomAreas{ };
 
-
 };
 

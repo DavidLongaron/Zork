@@ -20,8 +20,9 @@ class RoomArea
 	virtual ~RoomArea();
 	bool hasEvent{false};
 	bool hasItem{false};
-	Item* item;
+	const Item* item;
 	std::string description;
+	std::string itemDescription{ "" };
 
 	
 };

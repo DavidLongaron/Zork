@@ -1,6 +1,5 @@
 // Zork.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
 //
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -9,73 +8,174 @@
 #include "RoomArea.h"
 #include "Player.h"
 #include <algorithm>
-Item keyDoor1 = { std::string("Key") };
+
+const Item keyDoor1 = { std::string("Key") };
+const Item yellowKeyDoor2 = { std::string("Yellow Key") };
+const Item purpleKeyDoor2 = { std::string("Purple Key") };
 
 void emptyFunction(Player* player) {};
-RoomArea generateEmptyRoomArea() {
-	
+
+Room generateEmptyRoom() {
 	std::string description = "There is nothing here";
-	return RoomArea(description,emptyFunction);
+	std::vector<std::vector<RoomArea>> room{};
+	for (int i{ 0 }; i <= 2; ++i) {
+		room.push_back({});
+
+		for (int z{ 0 }; z <= 2; ++z) {
+			RoomArea newRoomArea = RoomArea(description, emptyFunction);
+
+			room[i].push_back(newRoomArea);
+		}
+	}
+
+
+	return room;
+}
+
+//Room createSecondRoom() {
+//	Room room2 = generateEmptyRoom();
+//
+//	room2.roomAreas[1][1].itemDescription = std::string("There is a ") + keyDoor1.name + std::string(" in the floor\n");
+//	std::cout << room2.roomAreas[1][1].itemDescription;
+//	room2.roomAreas[1][1].hasItem = true;
+//	room2.roomAreas[1][1].item = &keyDoor1;
+//	room2.roomAreas[0][1].description = "There is a door in front of you";
+//	room2.roomAreas[0][1].hasEvent = true;
+//	room2.roomAreas[0][1].roomEvent = &room1DoorEvent;
+//	return room2;
+//}
+
+
+
+void room2YellowEvent(Player* player) 
+{
+	if (player->currentRoom.roomAreas[0][0].hasItem && player->currentRoom.roomAreas[0][0].item == &yellowKeyDoor2) {
+		std::cout << "The yellow key fits perfectly in the hole\n";
+	}
+	else {
+		std::cout << "There is a yellow hole in the floor you could drop an item there\n";
+	}
+}
+
+void room2PurpleEvent(Player* player)
+{
+	if (player->currentRoom.roomAreas[0][2].hasItem && player->currentRoom.roomAreas[0][2].item == &purpleKeyDoor2) {
+		std::cout << "The purple key fits perfectly in the hole\n";
+	}
+	else {
+		std::cout << "There is a purple hole in the floor you could drop an item there\n";
+	}
+}
+
+void room2DoorEvent(Player* player) {
+
+	if ((player->currentRoom.roomAreas[0][0].hasItem && player->currentRoom.roomAreas[0][0].item == &yellowKeyDoor2)
+		&& 
+		player->currentRoom.roomAreas[0][2].hasItem && player->currentRoom.roomAreas[0][2].item == &purpleKeyDoor2) {
+		std::cout << "The door is already open!\n";
+		std::cout << "You move to the next room \n";
+
+	}
+	else {
+		std::cout << "There is a door in front of you, however you don't see any keyhole or similar\n";
+	}
+
+}
+
+Room createSecondRoom() {
+	Room room2 = generateEmptyRoom();
+
+	room2.roomAreas[2][0].itemDescription = std::string("There is a ") + yellowKeyDoor2.name + std::string(" in the floor\n");
+	room2.roomAreas[2][0].hasItem = true;
+	room2.roomAreas[2][0].item = &yellowKeyDoor2;
+
+	room2.roomAreas[2][2].itemDescription = std::string("There is a ") + purpleKeyDoor2.name + std::string(" in the floor\n");
+	room2.roomAreas[2][2].hasItem = true;
+	room2.roomAreas[2][2].item = &purpleKeyDoor2;
+
+
+	room2.roomAreas[0][0].hasEvent = true;
+	room2.roomAreas[0][0].roomEvent = &room2YellowEvent;
+
+	room2.roomAreas[0][2].hasEvent = true;
+	room2.roomAreas[0][2].roomEvent = &room2PurpleEvent;
+
+
+	room2.roomAreas[1][2].hasEvent = true;
+	room2.roomAreas[1][2].roomEvent = &room2DoorEvent;
+
+	return room2;
 }
 
 void room1DoorEvent(Player* player) {
 	std::cout << "There is a door in front of you\n";
 	auto itemIndex = find(player->itemList.begin(), player->itemList.end(), &keyDoor1);
 	if (itemIndex != player->itemList.end()) {
-		std::cout << "Yaay \n";
+		std::cout << "You use the key to open the door and move towards the next room \n";
+		Room room2 = createSecondRoom();
+		player->currentRoom=room2;
+		player->roomPosition.first = 2;
+		player->roomPosition.second = 1;
 	}
 
 }
 
-Room createRoom1(){
 
-	std::vector<std::vector<RoomArea>> room1{};
-	
-	for (int i{ 0 }; i <= 2; ++i) {
-		room1.push_back({});
-	
-		for (int z{ 0 }; z <= 2; ++z) {
-			RoomArea newRoomArea = generateEmptyRoomArea();
-	
-			room1[i].push_back(newRoomArea);
-		}
-	}
+Room createFirstRoom(){
 
-	
+	Room room1 = generateEmptyRoom();
 
-	room1[1][1].description = "There is a key in the floor";
-	room1[1][1].hasItem = true;
-	room1[1][1].item = &keyDoor1;
-	room1[0][1].description = "There is a door in front of you";
-	room1[0][1].hasEvent = true;
-	room1[0][1].roomEvent = &room1DoorEvent;
+	room1.roomAreas[1][1].itemDescription = std::string("There is a ") + keyDoor1.name + std::string(" in the floor\n");
+	room1.roomAreas[1][1].hasItem = true;
+	room1.roomAreas[1][1].item = &keyDoor1;
+	room1.roomAreas[0][1].hasEvent = true;
+	room1.roomAreas[0][1].roomEvent = &room1DoorEvent;
 	return room1;
 }
+
+//Room createRoom2() {
+//
+//	std::vector<std::vector<RoomArea>> room2{};
+//
+//	for (int i{ 0 }; i <= 2; ++i) {
+//		room2.push_back({});
+//
+//		for (int z{ 0 }; z <= 2; ++z) {
+//			RoomArea newRoomArea = generateEmptyRoomArea();
+//
+//			room2[i].push_back(newRoomArea);
+//		}
+//	}
+//
+//
+//
+//	room2[1][1].itemDescription = std::string("There is a ") + keyDoor1.name + std::string(" in the floor\n");
+//	std::cout << room1[1][1].itemDescription;
+//	room1[1][1].hasItem = true;
+//	room1[1][1].item = &keyDoor1;
+//	room1[0][1].description = "There is a door in front of you";
+//	room1[0][1].hasEvent = true;
+//	room1[0][1].roomEvent = &room1DoorEvent;
+//	return room1;
+//}
 
 
 
 void startAdventure(Player& player) {
-
-
 		player.PlayerInteractions();
-	
-
-
 }
 
 
 int main()
 {
-	std::cout << "Hola? \n";
-	Room room1 = createRoom1();
-	std::cout << "Hola?1 \n";
-	 Player  player{ room1 };
+
+	Room room1 = createFirstRoom();
+	Player  player{ room1 };
 	player.roomPosition.first = 2;
 	player.roomPosition.second = 1;
 	while (true) {
 
 		startAdventure(player);
-
 	}
 
 }
