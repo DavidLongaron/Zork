@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <iostream>
 #include <string>
+#include "Item.h"
 class Item;
 class Room;
 class Player 
@@ -16,10 +17,9 @@ public:
 	virtual ~Player();
 
 	void Move(std::pair<int,int>);
+
 	void PickItem(Item*);
-
-	void DropItem(const Item*);
-
+	void DropItem();
 	bool HaveItem(const Item*);
 	void PlayerInteractions();
 	std::vector<std::string>inputList{ std::string("up"), std::string("down"), std::string("right"), std::string("left"), std::string("pick"), std::string("drop") };

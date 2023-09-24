@@ -8,37 +8,47 @@
 #include "Item.h"
 #include "RoomArea.h"
 #include "Player.h"
-
+#include <algorithm>
+Item keyDoor1 = { std::string("Key") };
 
 void emptyFunction(Player* player) {};
 RoomArea generateEmptyRoomArea() {
+	
 	std::string description = "There is nothing here";
 	return RoomArea(description,emptyFunction);
 }
 
 void room1DoorEvent(Player* player) {
-	std::cout << "An event here";
+	std::cout << "There is a door in front of you\n";
+	auto itemIndex = find(player->itemList.begin(), player->itemList.end(), &keyDoor1);
+	if (itemIndex != player->itemList.end()) {
+		std::cout << "Yaay \n";
+	}
+
 }
 
 Room createRoom1(){
+
 	std::vector<std::vector<RoomArea>> room1{};
 	
 	for (int i{ 0 }; i <= 2; ++i) {
 		room1.push_back({});
+	
 		for (int z{ 0 }; z <= 2; ++z) {
 			RoomArea newRoomArea = generateEmptyRoomArea();
-			room1[i].push_back( newRoomArea);
+	
+			room1[i].push_back(newRoomArea);
 		}
 	}
 
-	Item key = { std::string("Key 1 Room") };
+	
+
 	room1[1][1].description = "There is a key in the floor";
 	room1[1][1].hasItem = true;
-	room1[1][1].item = &key;
+	room1[1][1].item = &keyDoor1;
 	room1[0][1].description = "There is a door in front of you";
 	room1[0][1].hasEvent = true;
 	room1[0][1].roomEvent = &room1DoorEvent;
-	std::cout << "Has event-1:" << room1[0][1].description << "\n";
 	return room1;
 }
 
@@ -46,7 +56,6 @@ Room createRoom1(){
 
 void startAdventure(Player& player) {
 
-	std::cout << "Has event2" << player.currentRoom.roomAreas[player.roomPosition.first][player.roomPosition.second].description << "\n";
 
 		player.PlayerInteractions();
 	
@@ -57,14 +66,14 @@ void startAdventure(Player& player) {
 
 int main()
 {
+	std::cout << "Hola? \n";
 	Room room1 = createRoom1();
-	std::cout << "Has event0:" << room1.roomAreas[0][0].description << "\n";
+	std::cout << "Hola?1 \n";
 	 Player  player{ room1 };
 	player.roomPosition.first = 2;
 	player.roomPosition.second = 1;
-
-	std::cout<< "Has event1:" << player.currentRoom.roomAreas[player.roomPosition.first][player.roomPosition.second].description << "\n";
 	while (true) {
+
 		startAdventure(player);
 
 	}

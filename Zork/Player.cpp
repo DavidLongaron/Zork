@@ -1,7 +1,5 @@
 #include "Player.h"
-#include <algorithm>
-#include <iostream>
-#include <string>
+#define CURRENT_ROOM_AREA this->currentRoom.roomAreas[this->roomPosition.first][this->roomPosition.second]
  Player::Player(Room room):
 	 currentRoom{room}
 {
@@ -12,21 +10,38 @@ Player::~Player()
 }
 
 void Player::PickItem( Item* item){
-	itemList.push_back(item);	
+	itemList.push_back(item);
+	std::cout << "You picked a " << item->name << "\n";
+	CURRENT_ROOM_AREA.hasItem = false;
+	CURRENT_ROOM_AREA.description = "There is nothing here";
 }
 
-void Player::DropItem(const Item* item){
-	auto itemIndex = find(itemList.begin(), itemList.end(), item);
-		if(itemIndex != itemList.end()) {
-			__int64 index = itemIndex - itemList.begin();
-			itemList.erase(itemList.begin() + index);
-		}
-	}
+void Player::DropItem() {
 
+	std::size_t length{ this->itemList.size() };
+	int playerInput = - 1;
+
+	while (playerInput<0 || playerInput>length ) {
+		std::cout << "Which item do you want to drop?: \n";
+		for (std::size_t index{ 0 }; index < length; ++index) {
+			std::cout << "Input " << index << " to drop:" << this->itemList[index]->name << "\n";
+		}
+
+		std::cin >> playerInput;
+
+
+	}
+	std::cout << "You dropped: " << itemList[playerInput]->name<< "\n";
+	CURRENT_ROOM_AREA.hasItem = true;
+	CURRENT_ROOM_AREA.item = itemList[playerInput];
+	itemList.erase(itemList.begin() + playerInput);
+	
+	
+}
 bool Player::HaveItem(const Item* item) {
 
-	auto test=std::find(itemList.begin(),itemList.end(), item) != itemList.end();
-	return test;
+	auto test=std::find(itemList.begin(),itemList.end(), item);
+	return true;
 }
 
 void Player::Move(std::pair<int, int>newRoomPosition) {
@@ -34,11 +49,9 @@ void Player::Move(std::pair<int, int>newRoomPosition) {
 	this->roomPosition.second = newRoomPosition.second;
 	std::cout << this->roomPosition.first << "--aaaa--" << this->roomPosition.second << "\n";
 	if (!this->currentRoom.roomAreas[this->roomPosition.first][this->roomPosition.second].hasEvent) {
-		std::cout << "Llegas aqui bien? 2 \n";
 		this->currentRoom.roomAreas[this->roomPosition.first][this->roomPosition.second].defaultEvent();
 	}
 	else {
-		std::cout << "Llegas aqui bien? 3 \n";
 		this->currentRoom.roomAreas[this->roomPosition.first][this->roomPosition.second].roomEvent(this);
 	}
 
@@ -70,14 +83,6 @@ void Player::PlayerInteractions() {
 		}	
 		std::cout << "-----------\n";
 		std::getline(std::cin >> std::ws, playerInput);
-
-		if (playerInput == "pick" && !this->currentRoom.roomAreas[this->roomPosition.first][this->roomPosition.second].hasItem) {
-			std::cout << "There is no item here \n";
-		}
-		if (playerInput == "drop" && this->currentRoom.roomAreas[this->roomPosition.first][this->roomPosition.second].hasItem) {
-			std::cout << "There is already an item here \n";
-	
-		}
 	}
 
 	 if (playerInput == "up" ) {
@@ -86,7 +91,7 @@ void Player::PlayerInteractions() {
 			 this->Move(newPosition);
 		 }
 		 else {
-			 std::cout << "Wrong Input \n";
+			 std::cout << "There is a wall in front of you\n";
 		 }
 	}
 	if (playerInput == "down") {
@@ -95,7 +100,7 @@ void Player::PlayerInteractions() {
 			this->Move(newPosition);
 		}
 		else {
-			std::cout << "Wrong Input \n";
+			std::cout << "There is a wall behind you \n";
 		}
 
 
@@ -106,7 +111,7 @@ void Player::PlayerInteractions() {
 			this->Move(newPosition);
 		}
 		else {
-			std::cout << "Wrong Input \n";
+			std::cout << "There is a wall in your right \n";
 		}
 
 
@@ -117,9 +122,27 @@ void Player::PlayerInteractions() {
 			this->Move(newPosition);
 		}
 		else {
-			std::cout << "Wrong Input \n";
+			std::cout << "There is a wall in your left \n";
 		}
 	
+	}
+	if (playerInput == "pick") {
+		if (CURRENT_ROOM_AREA.hasItem) {
+			this->PickItem(CURRENT_ROOM_AREA.item);
+		}
+		else {
+			std::cout << "There is no item here \n";
+		}
+
+	}
+	if (playerInput == "drop") {
+		if (!CURRENT_ROOM_AREA.hasItem) {
+			this->DropItem();
+		}
+		else {
+			std::cout << "There is already an item here \n";
+		}
+
 	}
 	playerInput = "";
 }

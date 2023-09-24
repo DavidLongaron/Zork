@@ -5,7 +5,7 @@
 
 
 RoomArea::RoomArea( std::string description, std::function<void(Player*)> eventFunction=NULL) :
-	roomEvent(eventFunction),description(description), item(nullptr)
+	roomEvent(eventFunction),description(description)
 {
 }
 

@@ -3,6 +3,8 @@
 #include <vector>
 #include <functional>
 #include <iostream>
+#include "Item.h"
+
 class Player;
 class Item;
 
