@@ -11,11 +11,6 @@ class Item;
 class Room;
 class Player 
 {
-private:
-
-	std::vector<std::string>inputList{ std::string("up"), std::string("down"), std::string("right"), std::string("left"), std::string("pick"), std::string("drop") };
-
-
 public:
 
 	Player(Room);

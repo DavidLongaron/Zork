@@ -1,5 +1,6 @@
 #include "Player.h"
 #define CURRENT_ROOM_AREA this->currentRoom.roomAreas[this->roomPosition.first][this->roomPosition.second]
+#define NOT_VALID_INPUTS playerInput != "up" && playerInput != "down" && playerInput != "right" && playerInput != "left" && playerInput != "pick" && playerInput != "drop"
  Player::Player(Room room):
 	 currentRoom{room}
 {
@@ -69,7 +70,7 @@ void Player::Move(std::pair<int, int>newRoomPosition) {
 void Player::PlayerInteractions() {
 	std::string playerInput = "";
 	
-	while (playerInput != "up" && playerInput != "down" && playerInput != "right" && playerInput != "left" && playerInput != "pick" && playerInput != "drop") {
+	while (NOT_VALID_INPUTS) {
 		//Could use a switch but I feel more comfortable with if chains, and for this type of asignment I prefer what I know best
 		std::cout << "\n----------- \n";
 		if (this->roomPosition.first > 0) {
@@ -90,7 +91,11 @@ void Player::PlayerInteractions() {
 		}	
 		std::cout << "-----------\n";
 		std::getline(std::cin >> std::ws, playerInput);
+		if (NOT_VALID_INPUTS) {
+			std::cout << "Wrong input\n";
+		}
 	}
+
 
 	 if (playerInput == "up" ) {
 		 if (!(this->roomPosition.first == 0)) {
