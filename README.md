@@ -35,7 +35,7 @@ For me the most difficult thing was get used to the new syntax and the way C++ w
 
 MIT License
 
-Copyright (c) [2023] [David Longaron Lorente]
+Copyright (c) 2023 David Longaron Lorente
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
