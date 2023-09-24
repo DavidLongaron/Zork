@@ -43,15 +43,6 @@ void room2YellowEvent(Player* player)
 	}
 }
 
-//void room2PurpleEvent(Player* player)
-//{
-//	if (player->currentRoom.roomAreas[0][2].hasItem && player->currentRoom.roomAreas[0][2].item == &purpleKeyDoor2) {
-//		std::cout << "The purple key fits perfectly in the hole\n";
-//	}
-//	else {
-//		std::cout << "There is a purple hole in the floor you could drop an item there\n";
-//	}
-//}
 void room3Event(Player* player) {
 	std::cout << "You find a man, he starts talking to you. \n";
 	Sleep(2000);
@@ -135,8 +126,7 @@ Room createSecondRoom() {
 	room2.roomAreas[0][0].hasEvent = true;
 	room2.roomAreas[0][0].roomEvent = &room2YellowEvent;
 
-	//room2.roomAreas[0][2].hasEvent = true;
-	//room2.roomAreas[0][2].roomEvent = &room2PurpleEvent;
+
 	room2.roomAreas[0][2].itemDescription = std::string("There is a ") + purpleLockDoor2.name + std::string(" in the floor, it has hole with the shape of a key\n");
 	room2.roomAreas[0][2].hasItem = true;
 	room2.roomAreas[0][2].item = &purpleLockDoor2;
@@ -172,7 +162,6 @@ int main()
 	player.roomPosition.second = 1;
 	std::cout << "Welcome to the Test, advance until the third room and talk with the person waiting there. \n";
 	while (gameLoopCondition) {
-
 		startAdventure(player);
 	}
 

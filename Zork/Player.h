@@ -9,8 +9,7 @@
 #include "Item.h"
 class Item;
 class Room;
-class Player 
-{
+class Player {
 public:
 
 	Player(Room);

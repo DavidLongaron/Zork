@@ -17,7 +17,7 @@ RoomArea::~RoomArea()
 {
 }
 
-void RoomArea::defaultEvent() {
+void RoomArea::DefaultEvent() {
 	if (!this->hasItem) {
 		std::cout << this->description << "\n";
 	}
